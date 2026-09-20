@@ -1,0 +1,427 @@
+/* ==========================================================================
+   1. GLOBAL VARIABLES & RESET
+   ========================================================================== */
+:root {
+    --bg-dark: #070d0b;
+    --surface-dark: #0e1714;
+    --surface-dropdown: #0d1e18;
+    --primary-green: #00e699;
+    --primary-green-alpha: rgba(0, 230, 153, 0.15);
+    --accent-red: #ff4a6b;
+    --text-main: #ffffff;
+    --text-muted: #7e8b85;
+    --border-color: rgba(255, 255, 255, 0.06);
+    --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    -webkit-tap-highlight-color: transparent; 
+}
+
+body { 
+    background-color: var(--bg-dark); 
+    color: var(--text-main); 
+    font-family: var(--font-stack); 
+    font-size: 14px; 
+    overflow-x: hidden; 
+}
+
+/* ==========================================================================
+   2. APP CONTAINER & MOBILE LAYOUT WRAPPER
+   ========================================================================== */
+.app-container { 
+    max-width: 480px; 
+    margin: 0 auto; 
+    background-color: var(--bg-dark); 
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    position: relative; 
+    padding-bottom: 70px; 
+}
+
+/* ==========================================================================
+   3. HEADER & CONTROLS
+   ========================================================================== */
+.main-header { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 12px 16px; 
+    background-color: var(--surface-dark); 
+    border-bottom: 1px solid var(--border-color); 
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+}
+
+.header-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.brand-title { 
+    font-weight: 700; 
+    font-size: 16px; 
+    letter-spacing: -0.5px; 
+}
+
+.brand-title span { 
+    color: var(--primary-green); 
+}
+
+.header-right { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.balance-container { 
+    background-color: rgba(255, 255, 255, 0.04); 
+    border: 1px solid var(--border-color); 
+    border-radius: 20px; 
+    padding: 4px 12px 4px 6px; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    cursor: pointer; 
+}
+
+.account-type-indicator { 
+    width: 20px; 
+    height: 20px; 
+    border-radius: 50%; 
+    background-color: var(--accent-red); 
+    color: white; 
+    font-size: 11px; 
+    font-weight: bold; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.account-type-indicator.real-style { 
+    background-color: #3498db; 
+}
+
+.balance-value { 
+    font-weight: 600; 
+    font-size: 14px; 
+}
+
+.deposit-btn { 
+    background-color: var(--primary-green); 
+    color: #000000; 
+    border: none; 
+    padding: 6px 16px; 
+    border-radius: 20px; 
+    font-weight: 600; 
+    font-size: 13px; 
+    cursor: pointer; 
+}
+
+/* ==========================================================================
+   4. DROPDOWN OVERLAYS (ACCOUNT SELECTION)
+   ========================================================================== */
+.dropdown-menu { 
+    position: absolute; 
+    top: 55px; 
+    right: 90px; 
+    width: 160px; 
+    background-color: var(--surface-dropdown); 
+    border: 1px solid var(--border-color); 
+    border-radius: 8px; 
+    display: none; 
+    z-index: 105; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5); 
+}
+
+.dropdown-menu.active { 
+    display: block; 
+}
+
+.dropdown-item { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 12px 14px; 
+    cursor: pointer; 
+    font-size: 13px; 
+}
+
+.dropdown-item:hover { 
+    background-color: rgba(255,255,255,0.03); 
+}
+
+/* ==========================================================================
+   5. MARKET SELECTION PANELS
+   ========================================================================== */
+.market-selector-section { 
+    padding: 12px 16px; 
+    position: relative; 
+}
+
+.active-market-display { 
+    background-color: rgba(255, 255, 255, 0.03); 
+    border: 1px solid var(--border-color); 
+    border-radius: 8px; 
+    padding: 10px 14px; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    cursor: pointer; 
+}
+
+.market-icon { 
+    color: var(--primary-green); 
+    font-size: 16px; 
+}
+
+.market-scroll-overlay { 
+    position: absolute; 
+    top: 54px; 
+    left: 16px; 
+    right: 16px; 
+    background-color: var(--surface-dropdown); 
+    border: 1px solid var(--border-color); 
+    border-radius: 8px; 
+    max-height: 200px; 
+    overflow-y: auto; 
+    display: none; 
+    z-index: 110; 
+}
+
+.market-scroll-overlay.active { 
+    display: block; 
+}
+
+.market-option-row { 
+    display: flex; 
+    align-items: center; 
+    padding: 12px 16px; 
+    cursor: pointer; 
+    font-size: 13px; 
+    border-bottom: 1px solid rgba(255,255,255,0.02); 
+}
+
+.market-option-row:hover { 
+    background-color: rgba(255, 255, 255, 0.03); 
+}
+
+.market-option-row.selected { 
+    background-color: var(--primary-green-alpha); 
+    color: var(--primary-green); 
+    font-weight: 500; 
+}
+
+/* ==========================================================================
+   6. REAL-TIME TICK CHART CONTAINER
+   ========================================================================== */
+.chart-wrapper { 
+    height: 160px; 
+    padding: 0 16px; 
+    position: relative; 
+    margin-bottom: 12px; 
+}
+
+/* ==========================================================================
+   7. LAST-DIGIT ANALYZER PIPELINE BUBBLES
+   ========================================================================== */
+.pipeline-analyzer { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 6px; 
+    padding: 0 16px; 
+    margin-bottom: 14px; 
+}
+
+@media(min-width: 360px) { 
+    .pipeline-analyzer { 
+        grid-template-columns: repeat(10, 1fr); 
+        gap: 4px; 
+    } 
+}
+
+.digit-bubble-slot { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 4px; 
+}
+
+.digit-circle { 
+    width: 32px; 
+    height: 32px; 
+    border-radius: 50%; 
+    background-color: rgba(255, 255, 255, 0.03); 
+    border: 1px solid var(--border-color); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 12px; 
+    font-weight: 600; 
+    transition: all 0.2s ease; 
+}
+
+.digit-circle.active-tick { 
+    background-color: var(--text-main); 
+    color: #000000; 
+    transform: scale(1.1); 
+    box-shadow: 0 0 8px rgba(255,255,255,0.3); 
+}
+
+.digit-percentage { 
+    font-size: 10px; 
+    color: var(--text-muted); 
+}
+
+/* ==========================================================================
+   8. RUNTIME EXECUTION MODES
+   ========================================================================== */
+.execution-mode-tabs { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    background-color: rgba(255, 255, 255, 0.03); 
+    margin: 0 16px 14px 16px; 
+    border-radius: 8px; 
+    padding: 4px; 
+    border: 1px solid var(--border-color); 
+}
+
+.mode-toggle-btn { 
+    background: none; 
+    border: none; 
+    color: var(--text-muted); 
+    padding: 8px; 
+    font-weight: 600; 
+    font-size: 12px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+}
+
+.mode-toggle-btn.active { 
+    background-color: var(--primary-green); 
+    color: #000000; 
+}
+
+/* ==========================================================================
+   9. PARAMETERS PANEL & CONTROLS
+   ========================================================================== */
+.trade-parameters-panel { 
+    padding: 0 16px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+    margin-bottom: 16px; 
+}
+
+.parameter-row-group { 
+    background-color: var(--surface-dark); 
+    border: 1px solid var(--border-color); 
+    border-radius: 8px; 
+    padding: 10px; 
+}
+
+.parameter-header-label { 
+    font-size: 10px; 
+    color: var(--text-muted); 
+    text-align: center; 
+    margin-bottom: 6px; 
+}
+
+.numeric-stepper-container { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    max-width: 160px; 
+    margin: 0 auto 8px auto; 
+}
+
+.stepper-btn { 
+    background-color: rgba(255, 255, 255, 0.04); 
+    border: 1px solid var(--border-color); 
+    color: var(--text-main); 
+    width: 28px; 
+    height: 28px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 16px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.stepper-value-display { 
+    font-size: 16px; 
+    font-weight: 700; 
+}
+
+.stepper-value-display span { 
+    color: var(--primary-green); 
+    font-size: 12px; 
+}
+
+.quick-chips-scroller { 
+    display: flex; 
+    gap: 4px; 
+    justify-content: center; 
+}
+
+.stake-chip { 
+    background: none; 
+    border: 1px solid var(--border-color); 
+    color: var(--text-muted); 
+    padding: 4px 10px; 
+    border-radius: 6px; 
+    font-size: 11px; 
+    cursor: pointer; 
+}
+
+.stake-chip.selected { 
+    border-color: var(--primary-green); 
+    color: var(--primary-green); 
+    background-color: var(--primary-green-alpha); 
+}
+
+.risk-thresholds-grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 8px; 
+}
+
+.risk-input-card { 
+    background-color: var(--surface-dark); 
+    border: 1px solid var(--border-color); 
+    border-radius: 8px; 
+    padding: 6px; 
+    text-align: center; 
+}
+
+.risk-label { 
+    font-size: 9px; 
+    color: var(--text-muted); 
+    margin-bottom: 2px; 
+}
+
+.risk-input-wrapper input { 
+    background: none; 
+    border: none; 
+    color: var(--text-main); 
+    width: 40px; 
+    text-align: center; 
+    font-size: 13px; 
+    font-weight: 600; 
+    outline: none; 
+}
+
+/* ==========================================================================
+   10. TRADE EXECUTION ACTION BUTTONS
+   ========================================================================== */
+.execution-pads-row { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+
