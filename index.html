@@ -1,154 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading System Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Chart.js for real-time tick stream visualization -->
-    <script src="https://jsdelivr.net"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta name="theme-color" content="#101827">
+  <title>KRISHWAVE FREE PREDICTION AI</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="app-container">
-        <!-- HEADER ARCHITECTURE -->
-        <header class="main-header">
-            <div class="header-left">
-                <button class="nav-trigger" id="menuToggleBtn" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">☰</button>
-                <h1 class="brand-title">TNN<span>binary</span></h1>
-            </div>
-            <div class="header-right">
-                <div class="balance-container" id="accountTypeDropdownToggle">
-                    <div class="account-type-indicator" id="headerAccountTypeIndicator">D</div>
-                    <span class="balance-value" id="headerBalanceDisplay">$10,000.00</span>
-                </div>
-                <button class="deposit-btn" id="openDepositModalBtn">Deposit</button>
-            </div>
-        </header>
+  <div class="app">
 
-        <!-- ACCOUNT SWITCHER OVERLAY MENU -->
-        <div class="dropdown-menu" id="accountDropdownMenu">
-            <div class="dropdown-item" data-acc="real">
-                <span style="display:flex; align-items:center; gap:8px;">
-                    <span style="width:10px; height:10px; background:#3498db; border-radius:50%;"></span> Real Account
-                </span>
-            </div>
-            <div class="dropdown-item" data-acc="demo">
-                <span style="display:flex; align-items:center; gap:8px;">
-                    <span style="width:10px; height:10px; background:#ff4a6b; border-radius:50%;"></span> Demo Account
-                </span>
-            </div>
+    <!-- HEADER -->
+    <header class="topbar">
+      <div class="brand">
+        <button id="menuBtn" class="icon-btn">☰</button>
+        <div>
+          <div class="brand-name">KRISHWAVE</div>
+          <div class="brand-sub">FREE PREDICTION AI</div>
+        </div>
+      </div>
+
+      <div class="balance-area">
+        <span class="balance-label">PAPER</span>
+        <strong id="balance">$1,000.00</strong>
+      </div>
+    </header>
+
+    <!-- SIDE MENU -->
+    <aside id="sideMenu" class="side-menu">
+      <div class="menu-head">
+        <b>KRISHWAVE</b>
+        <button id="closeMenu" class="icon-btn">×</button>
+      </div>
+
+      <button class="menu-item" data-section="trade">💱 Trade</button>
+      <button class="menu-item" data-section="analysis">📊 Analysis</button>
+      <button class="menu-item" data-section="prediction">🤖 Free Prediction AI</button>
+      <button class="menu-item" data-section="history">📜 History</button>
+      <button class="menu-item">💰 Deposit</button>
+      <button class="menu-item">💸 Withdraw</button>
+      <button class="menu-item">📖 How to Trade</button>
+      <button class="menu-item">👤 Account</button>
+      <button class="menu-item">💬 Live Chat</button>
+      <button class="menu-item">⚙️ Settings</button>
+    </aside>
+
+    <main>
+
+      <!-- CONTRACT TABS -->
+      <section class="contract-tabs">
+        <button class="contract-tab active" data-contract="matches">
+          Matches/Differs
+        </button>
+
+        <button class="contract-tab" data-contract="evenodd">
+          Even/Odd
+        </button>
+
+        <button class="contract-tab" data-contract="overunder">
+          Over/Under
+        </button>
+
+        <button class="duration">1T</button>
+      </section>
+
+      <!-- MARKET -->
+      <section class="market-card">
+        <div class="market-title">
+          <div>
+            <span class="live-dot"></span>
+            <b id="marketName">Volatility 10 (1s) Index</b>
+          </div>
+
+          <select id="marketSelect">
+            <option value="Volatility 10 (1s) Index">Volatility 10 (1s) Index</option>
+            <option value="Volatility 25 (1s) Index">Volatility 25 (1s) Index</option>
+            <option value="Volatility 50 (1s) Index">Volatility 50 (1s) Index</option>
+            <option value="Volatility 75 (1s) Index">Volatility 75 (1s) Index</option>
+            <option value="Volatility 100 (1s) Index">Volatility 100 (1s) Index</option>
+          </select>
         </div>
 
-        <!-- MARKET SELECTOR SECTION -->
-        <section class="market-selector-section">
-            <div class="active-market-display" id="assetSelectionDisplayRow">
-                <span class="market-icon">📈</span>
-                <span id="activeAssetNameLabel" style="font-weight:600;">Volatility 10 Index</span>
-            </div>
-            
-            <!-- OVERLAY LIST OF DERIV SYNTHETIC INDICES -->
-            <div class="market-scroll-overlay" id="marketScrollOverlayMenu">
-                <div class="market-option-row" data-asset-name="Volatility 10 (1s) Index">Volatility 10 (1s) Index</div>
-                <div class="market-option-row selected" data-asset-name="Volatility 10 Index">Volatility 10 Index</div>
-                <div class="market-option-row" data-asset-name="Volatility 15 (1s) Index">Volatility 15 (1s) Index</div>
-                <div class="market-option-row" data-asset-name="Volatility 25 (1s) Index">Volatility 25 (1s) Index</div>
-                <div class="market-option-row" data-asset-name="Volatility 25 Index">Volatility 25 Index</div>
-                <div class="market-option-row" data-asset-name="Volatility 50 (1s) Index">Volatility 50 (1s) Index</div>
-                <div class="market-option-row" data-asset-name="Volatility 50 Index">Volatility 50 Index</div>
-                <div class="market-option-row" data-asset-name="Volatility 75 (1s) Index">Volatility 75 (1s) Index</div>
-                <div class="market-option-row" data-asset-name="Volatility 75 Index">Volatility 75 Index</div>
-                <div class="market-option-row" data-asset-name="Volatility 100 (1s) Index">Volatility 100 (1s) Index</div>
-                <div class="market-option-row" data-asset-name="Volatility 100 Index">Volatility 100 Index</div>
-            </div>
-        </section>
-
-        <!-- STREAMING LINE GRAPH -->
-        <div class="chart-wrapper">
-            <canvas id="tickChart"></canvas>
-            <div style="position:absolute; top:10px; right:25px; background:rgba(0,0,0,0.6); padding:4px 8px; border-radius:4px; font-size:12px;">
-                Price: <span id="currentPriceDisplay" style="color:var(--primary-green); font-weight:bold;">0.00</span>
-            </div>
+        <div class="price-row">
+          <strong id="price">9448.98</strong>
+          <span id="change">-0.01 (-0.01%) ↘</span>
         </div>
 
-        <!-- STATISTICS PIPELINE MODULE -->
-        <div class="pipeline-analyzer">
-            <div class="digit-bubble-slot"><div class="digit-circle" id="bubble-0">0</div><div class="digit-percentage" id="pct-0">0%</div></div>
-            <div class="digit-bubble-slot"><div class="digit-circle" id="bubble-1">1</div><div class="digit-percentage" id="pct-1">0%</div></div>
-            <div class="digit-bubble-slot"><div class="digit-circle" id="bubble-2">2</div><div class="digit-percentage" id="pct-2">0%</div></div>
-            <div class="digit-bubble-slot"><div class="digit-circle" id="bubble-3">3</div><div class="digit-percentage" id="pct-3">0%</div></div>
-            <div class="digit-bubble-slot"><div class="digit-circle" id="bubble-4">4</div><div class="digit-percentage" id="pct-4">0%</div></div>
-            <div class="digit-bubble-slot"><div class="digit-circle" id="bubble-5">5</div><div class="digit-percentage" id="pct-5">0%</div></div>
-            <div class="digit-bubble-slot"><div class="digit-circle" id="bubble-6">6</div><div class="digit-percentage" id="pct-6">0%</div></div>
-            <div class="digit-bubble-slot"><div class="digit-circle" id="bubble-7">7</div><div class="digit-percentage" id="pct-7">0%</div></div>
-            <div class="digit-bubble-slot"><div class="digit-circle" id="bubble-8">8</div><div class="digit-percentage" id="pct-8">0%</div></div>
-            <div class="digit-bubble-slot"><div class="digit-circle" id="bubble-9">9</div><div class="digit-percentage" id="pct-9">0%</div></div>
+        <div class="chart-head">
+          <span>Historical View</span>
+          <span>50%</span>
         </div>
 
-        <!-- EXECUTION MODE SWITCHER -->
-        <div class="execution-mode-tabs">
-            <button class="mode-toggle-btn active" data-mode="manual">MANUAL</button>
-            <button class="mode-toggle-btn" data-mode="auto">AUTO</button>
+        <div class="chart-container">
+          <canvas id="chart"></canvas>
         </div>
 
-        <!-- RUNTIME CONFIGURATION PARAMETERS -->
-        <div class="trade-parameters-panel">
-            <div class="parameter-row-group">
-                <div class="parameter-header-label">STAKE</div>
-                <div class="numeric-stepper-container">
-                    <button class="stepper-btn" id="btnStakeMinus">-</button>
-                    <div class="stepper-value-display"><span>$</span><span id="stakeInputDisplay">10</span></div>
-                    <button class="stepper-btn" id="btnStakePlus">+</button>
-                </div>
-                <div class="quick-chips-scroller">
-                    <button class="stake-chip" data-value="1">$1</button>
-                    <button class="stake-chip" data-value="5">$5</button>
-                    <button class="stake-chip selected" data-value="10">$10</button>
-                    <button class="stake-chip" data-value="25">$25</button>
-                    <button class="stake-chip" data-value="50">$50</button>
-                    <button class="stake-chip" data-value="100">$100</button>
-                </div>
+        <div id="digitGrid" class="digit-grid"></div>
+      </section>
+
+      <!-- AI PREDICTION -->
+      <section class="prediction-card">
+        <div class="prediction-top">
+          <div>
+            <span class="small-label">AI PREDICTION</span>
+            <div id="predictionText" class="prediction-text">
+              ANALYZING...
             </div>
+          </div>
 
-            <!-- RISK MANAGEMENT OBJECTIVES -->
-            <div class="risk-thresholds-grid">
-                <div class="risk-input-card">
-                    <div class="risk-label">🎯 TARGET</div>
-                    <div class="risk-input-wrapper"><span>$</span><input type="number" id="inputTargetProfit" value="200"></div>
-                </div>
-                <div class="risk-input-card">
-                    <div class="risk-label">🛑 STOP LOSS</div>
-                    <div class="risk-input-wrapper"><span>$</span><input type="number" id="inputStopLoss" value="999"></div>
-                </div>
-                <div class="risk-input-card">
-                    <div class="risk-label">✖ MULT</div>
-                    <div class="risk-input-wrapper"><span>x</span><input type="number" id="inputMartingale" value="2" step="0.5"></div>
-                </div>
-            </div>
+          <div id="confidence" class="confidence">
+            0%
+          </div>
         </div>
 
-        <!-- TRANSACTION TRIGGER PADS -->
-        <div class="execution-pads-row">
-            <button class="trade-action-pad even-direction" id="padEvenAction">
-                <div class="pad-meta-left"><div class="pad-title-label">Even</div><div class="pad-sub-percentage">95.20%</div></div>
-                <div class="pad-meta-right"><div class="pad-payout-value">$19.52</div><div class="pad-payout-label">Payout</div></div>
-            </button>
-            <button class="trade-action-pad odd-direction" id="padOddAction">
-                <div class="pad-meta-left"><div class="pad-title-label">Odd</div><div class="pad-sub-percentage">95.20%</div></div>
-                <div class="pad-meta-right"><div class="pad-payout-value">$19.52</div><div class="pad-payout-label">Payout</div></div>
-            </button>
+        <div class="prediction-details">
+          <div>
+            <span>Predicted Digit</span>
+            <strong id="predictedDigit">-</strong>
+          </div>
+
+          <div>
+            <span>Signal</span>
+            <strong id="signal">WAIT</strong>
+          </div>
+
+          <div>
+            <span>Strategy</span>
+            <strong id="strategy">MATCHES</strong>
+          </div>
         </div>
 
-        <!-- FIXED FOOTER NAVIGATION -->
-        <nav class="fixed-footer-nav">
-            <button class="nav-tab-item" id="navLiveChat"><span class="nav-icon-container">💬</span><span>Live Chat</span></button>
-            <button class="nav-tab-item ai-center-node" id="navAIBot"><div class="ai-icon-circle">✨</div><span style="font-size:10px; color:var(--text-muted); margin-top:2px;">AI Bot</span></button>
-            <button class="nav-tab-item" id="navPositions"><span class="nav-icon-container">📋</span><span>Positions</span></button>
-        </nav>
+        <button id="usePrediction" class="ai-button">
+          USE AI PREDICTION
+        </button>
+      </section>
 
-        <!-- SIDEBAR DRAWER OVERLAY -->
-        <div id="menuDrawer" class="menu-drawer">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
-                <span style="font-weight:bold; color:var(--primary-green);">Navigation</span>
-                <button id="closeDrawerBtn" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">&times;</button>
+      <!-- MODE -->
+      <section class="mode-row">
+        <button id="autoBtn" class="mode-btn active">AUTO</button>
+        <button id="manualBtn" class="mode-btn">MANUAL</button>
+      </section>
+
+      <!-- TRADE SETTINGS -->
+      <section class="settings-card">
+
+        <div class="field">
+          <label>Stake</label>
+          <div class="input-box">
+            <span>$</span>
+            <input id="stake" type="number" value="10" min="1">
+          </div>
+        </div>
+
+        <div class="stake-buttons">
+          <button data-stake="1">$1</button>
+          <button data-stake="5">$5</button>
+          <button data-stake="10">$10</button>
+          <button data-stake="25">$25</button>
+          <button data-stake="50">$50</button>
+          <button data-stake="100">$100</button>
+        </div>
+
+        <div class="two-fields">
+          <div class="field">
+            <label>Target</label>
+            <div class="input-box">
+              <span>$</span>
+              <input id="target" type="number" value="200">
             </div>
+          </div>
 
+          <div class="field">
+            <label>Stop Loss</label>
+            <div class="input-box">
+              <span>$</span>
+              <input id="stopLoss" type="number" value="999">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Mult</label>
+            <div class="input-box">
+              <span>x</span>
+              <input id="multiplier" type="number" value="2" min="1" step="0.5">
+            </div>
+          </div>
+        </div>
+
+        <!-- MANUAL TARGET -->
+        <div id="manualTargetBox" class="manual-target hidden">
+          <label>Target Digit</label>
+          <div class="digit-input-row">
+            <input id="manualDigit" type="number" min="0" max="9" value="5">
+            <span>0–9</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTRACT BUTTONS -->
+      <section id="tradeButtons" class="trade-buttons"></section>
+
+      <!-- STATUS -->
+      <section class="status-card">
+        <div>
+          <span>Last Digit</span>
+          <strong id="lastDigit">-</strong>
+        </div>
+
+        <div>
+          <span>Next Tick</span>
+          <strong id="countdown">1.0s</strong>
+        </div>
+
+        <div>
+          <span>Win Rate</span>
+          <strong id="winRate">0%</strong>
+        </div>
+      </section>
+
+      <!-- SECTIONS -->
+      <section id="analysisSection" class="extra-section hidden">
+        <h3>📊 Analysis</h3>
+        <div class="analysis-grid">
+          <div>Digit Stability <b id="stability">0%</b></div>
+          <div>Recent Support <b id="support">0%</b></div>
+          <div>Transition Score <b id="transition">0%</b></div>
+          <div>Entropy <b id="entropy">0%</b></div>
+        </div>
+      </section>
+
+      <section id="historySection" class="extra-section hidden">
+        <h3>📜 Trade History</h3>
+        <div id="historyList"></div>
+      </section>
+
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <button data-section="trade" class="bottom-btn active">
+        <span>💱</span>
+        Trade
+      </button>
+
+      <button data-section="analysis" class="bottom-btn">
+        <span>📊</span>
+        Analysis
+      </button>
+
+      <button data-section="prediction" class="bottom-btn">
+        <span>🤖</span>
+        AI
+      </button>
+
+      <button data-section="history" class="bottom-btn">
+        <span>📜</span>
+        History
+      </button>
+    </nav>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+            </html>
